@@ -1,28 +1,45 @@
+html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Budget mensuel</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Budget">
+<meta name="theme-color" content="#0d0f12">
+<title>Budget</title>
 <style>
-:root{--bg:#0d0f12;--card:#171a20;--line:#252a33;--tx:#eef1f5;--mu:#8b93a1;--ok:#34d399;--ko:#f87171;--ac:#6366f1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#0d0f12;--card:#161a21;--line:#252a33;--tx:#eef1f5;--mu:#8b93a1;--ok:#34d399;--ko:#f87171;--ac:#6366f1;--ac2:#a855f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif}
 .w{max-width:480px;margin:0 auto;padding:16px}
+.hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(99,102,241,.4)}
+.hd h1{margin:0;font-size:20px}
+.hd small{display:block;color:var(--mu);font-size:12px;margin-top:2px}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .tabs button{flex:none;background:var(--card);color:var(--mu);border:1px solid var(--line);border-radius:20px;padding:8px 14px;font-size:14px}
-.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-.sum{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}
-.row{display:flex;justify-content:space-between;gap:12px}
+.tabs button.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .lb{font-size:11px;letter-spacing:.08em;color:var(--mu);text-transform:uppercase}
 .big{font-size:30px;font-weight:700;margin-top:4px}
 .bar{height:8px;background:var(--line);border-radius:4px;margin-top:16px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;border-radius:4px;transition:width .3s,background .3s}
-.st{font-size:12px;margin-top:8px;color:var(--mu)}
+.st{font-size:12px;margin-top:8px}
+.sub{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--mu)}
+.sub b{color:var(--tx)}
+.gold{font-size:24px;font-weight:700;color:#fbbf24}
+.mini{display:flex;gap:8px;margin-top:12px}
+.mini input{flex:1}
+.mini button,.ghost{background:var(--line);color:var(--tx);border:0;border-radius:12px;padding:0 14px;font-size:14px;font-weight:600}
+.ghost{padding:8px 12px;font-size:12px;color:var(--mu)}
+.msg{font-size:12px;color:var(--mu);margin-top:8px;min-height:14px}
 form{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-input{background:var(--card);border:1px solid var(--line);border-radius:12px;color:var(--tx);padding:13px;font-size:16px;width:100%}
+input{background:#0d0f12;border:1px solid var(--line);border-radius:12px;color:var(--tx);padding:13px;font-size:16px;width:100%}
+form input{background:var(--card)}
 input:focus{outline:2px solid var(--ac);border-color:transparent}
-.add{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:600}
+.add{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:600}
 ul{list-style:none;margin:0;padding:0}
 li{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
 li span.n{flex:1;overflow-wrap:anywhere}
@@ -33,14 +50,25 @@ li button{background:none;border:0;color:var(--mu);font-size:20px;padding:2px 6p
 </head>
 <body>
 <div class="w">
+  <div class="hd"><div class="logo">B</div><div><h1>Mon Budget</h1><small>Vie quotidienne · 500 € / mois</small></div></div>
   <div class="tabs" id="tabs"></div>
-  <div class="sum">
+  <div class="card">
     <div class="row">
       <div><div class="lb">Total dépensé</div><div class="big" id="tot">0 €</div></div>
-      <div style="text-align:right"><div class="lb">Restant sur 500 €</div><div class="big" id="rest">500 €</div></div>
+      <div style="text-align:right"><div class="lb">Restant</div><div class="big" id="rest">500 €</div></div>
     </div>
     <div class="bar"><i id="bar"></i></div>
     <div class="st" id="st"></div>
+    <div class="sub">Budget du mois : <b id="avail">500 €</b> <span id="bn"></span></div>
+  </div>
+  <div class="card" style="margin-top:0">
+    <div class="row">
+      <div><div class="lb">🐷 Cagnotte disponible</div><div class="gold" id="pot">0 €</div></div>
+      <button class="ghost" id="undo" style="display:none">Annuler le bonus</button>
+    </div>
+    <div class="mini"><input id="bon" placeholder="Montant à ajouter à ce mois" inputmode="decimal" autocomplete="off"><button id="bonBtn" type="button">Ajouter</button></div>
+    <div class="msg" id="msg"></div>
+    <div class="sub" style="margin-top:6px;padding-top:10px">Fin de ce mois, la cagnotte sera à : <b id="after">0 €</b></div>
   </div>
   <form id="f">
     <input id="lab" placeholder="Objet / Libellé (ex : Essence)" autocomplete="off" required>
@@ -52,34 +80,70 @@ li button{background:none;border:0;color:var(--mu);font-size:20px;padding:2px 6p
 <script>
 var BUDGET=500,KEY="budget-v1";
 var MONTHS=["Août","Septembre","Octobre","Novembre","Décembre","Janvier"];
-var data={},cur="Septembre";
-MONTHS.forEach(function(m){data[m]=[]});
-try{var s=localStorage.getItem(KEY);if(s){var p=JSON.parse(s);if(p&&p.data)data=p.data;if(p&&p.cur)cur=p.cur}}catch(e){}
-MONTHS.forEach(function(m){if(!data[m])data[m]=[]});
-function save(){try{localStorage.setItem(KEY,JSON.stringify({data:data,cur:cur}))}catch(e){}}
-function eur(n){return n.toLocaleString("fr-FR",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2})+" €"}
+var data={},bonus={},cur="Septembre";
+try{var s=localStorage.getItem(KEY);if(s){var p=JSON.parse(s);if(p&&p.data)data=p.data;if(p&&p.bonus)bonus=p.bonus;if(p&&p.cur)cur=p.cur}}catch(e){}
+MONTHS.forEach(function(m){if(!data[m])data[m]=[];if(!bonus[m])bonus[m]=0});
+function save(){try{localStorage.setItem(KEY,JSON.stringify({data:data,bonus:bonus,cur:cur}))}catch(e){}}
+function r2(n){return Math.round(n*100)/100}
+function eur(n){n=r2(n);return n.toLocaleString("fr-FR",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2})+" €"}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function num(v){return parseFloat(String(v).replace(",","."))}
+function calc(){
+  var R=0,out={};
+  MONTHS.forEach(function(m){
+    var sp=r2(data[m].reduce(function(a,x){return a+x.a},0)),b=Math.min(bonus[m]||0,R),avail=r2(BUDGET+b);
+    var ch=data[m].length?Math.max(BUDGET-sp,-b):0;
+    out[m]={R:r2(R),b:b,avail:avail,sp:sp,rest:r2(avail-sp),after:r2(R+ch)};
+    R=R+ch;
+  });
+  return out;
+}
+function msg(t){document.getElementById("msg").textContent=t||""}
 function render(){
   var t=document.getElementById("tabs");t.innerHTML="";
-  MONTHS.forEach(function(m){var b=document.createElement("button");b.textContent=m;b.className=m===cur?"on":"";b.onclick=function(){cur=m;save();render()};t.appendChild(b)});
-  var items=data[cur],total=items.reduce(function(a,x){return a+x.a},0),rest=BUDGET-total,over=rest<0,col=over?"var(--ko)":"var(--ok)";
-  document.getElementById("tot").textContent=eur(total);
-  var r=document.getElementById("rest");r.textContent=eur(rest);r.style.color=col;
-  var bar=document.getElementById("bar");bar.style.width=Math.min(100,total/BUDGET*100)+"%";bar.style.background=col;
+  MONTHS.forEach(function(m){var b=document.createElement("button");b.textContent=m;b.className=m===cur?"on":"";b.onclick=function(){cur=m;save();msg();render()};t.appendChild(b)});
+  var c=calc()[cur],over=c.rest<0,col=over?"var(--ko)":"var(--ok)";
+  document.getElementById("tot").textContent=eur(c.sp);
+  var r=document.getElementById("rest");r.textContent=eur(c.rest);r.style.color=col;
+  var bar=document.getElementById("bar");bar.style.width=Math.min(100,c.sp/c.avail*100)+"%";bar.style.background=col;
   var st=document.getElementById("st");st.style.color=col;
-  st.textContent=over?"Dépassement de "+eur(-rest):"Dans le budget ("+Math.round(total/BUDGET*100)+" % utilisé)";
-  var l=document.getElementById("list");
+  st.textContent=over?"Dépassement de "+eur(-c.rest):"Dans le budget ("+Math.round(c.sp/c.avail*100)+" % utilisé)";
+  document.getElementById("avail").textContent=eur(c.avail);
+  document.getElementById("bn").textContent=c.b>0?"(500 € + "+eur(c.b)+" de la cagnotte)":"";
+  document.getElementById("pot").textContent=eur(Math.max(0,c.R-c.b));
+  document.getElementById("after").textContent=eur(c.after);
+  document.getElementById("undo").style.display=c.b>0?"block":"none";
+  var items=data[cur],l=document.getElementById("list");
   if(!items.length){l.innerHTML='<div class="empty">Aucune dépense pour '+cur+'</div>';return}
   l.innerHTML=items.map(function(x,i){return '<li><span class="n">'+esc(x.l)+'</span><b>'+eur(x.a)+'</b><button aria-label="Supprimer" data-i="'+i+'">✕</button></li>'}).join("");
   l.querySelectorAll("button").forEach(function(b){b.onclick=function(){data[cur].splice(+b.dataset.i,1);save();render()}});
 }
 document.getElementById("f").onsubmit=function(e){
   e.preventDefault();
-  var l=document.getElementById("lab").value.trim(),a=parseFloat(document.getElementById("amt").value.replace(",","."));
+  var l=document.getElementById("lab").value.trim(),a=num(document.getElementById("amt").value);
   if(!l||isNaN(a)||a<=0)return;
   data[cur].push({l:l,a:a});save();render();
   document.getElementById("lab").value="";document.getElementById("amt").value="";document.getElementById("lab").focus();
 };
+document.getElementById("bonBtn").onclick=function(){
+  var inp=document.getElementById("bon"),a=num(inp.value),c=calc()[cur],free=r2(c.R-c.b);
+  if(isNaN(a)||a<=0){msg("Entre un montant.");return}
+  if(free<=0){msg("La cagnotte est vide.");return}
+  var add=Math.min(a,free);
+  bonus[cur]=r2(c.b+add);save();inp.value="";render();
+  msg(add<a?"Limité à "+eur(add)+" (tout ce qui restait).":eur(add)+" ajoutés à "+cur+".");
+};
+document.getElementById("undo").onclick=function(){bonus[cur]=0;save();msg("Bonus retiré, l'argent retourne dans la cagnotte.");render()};
+(function(){
+  try{
+    var c=document.createElement("canvas");c.width=c.height=180;var x=c.getContext("2d");
+    var g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,"#6366f1");g.addColorStop(1,"#a855f7");
+    x.fillStyle=g;x.fillRect(0,0,180,180);
+    x.fillStyle="#fff";x.font="800 120px -apple-system,Helvetica,Arial,sans-serif";x.textAlign="center";x.textBaseline="middle";x.fillText("B",90,98);
+    var u=c.toDataURL("image/png");
+    ["apple-touch-icon","icon"].forEach(function(rel){var k=document.createElement("link");k.rel=rel;k.href=u;document.head.appendChild(k)});
+  }catch(e){}
+})();
 render();
 </script>
 </body>
